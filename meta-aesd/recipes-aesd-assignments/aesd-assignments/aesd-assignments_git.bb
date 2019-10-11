@@ -18,7 +18,7 @@ S = "${WORKDIR}/git"
 # See http://git.yoctoproject.org/cgit.cgi/poky/plain/meta/conf/bitbake.conf?h=warrior for yocto path prefixes
 #FILES_${PN} += "${bindir}/aesdsocket"
 # TODO: customize these as necessary for any libraries you need for your application
-#TARGET_LDFLAGS += "-lpthread -lrt"
+#TARGET_LDFLAGS += "-pthread -lrt"
 
 do_configure () {
 	:
