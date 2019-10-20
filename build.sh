@@ -1,4 +1,4 @@
-# !/bin/bash
+#!/bin/bash
 # Script to build image for qemu.
 # Author: Siddhant Jajoo.
 
