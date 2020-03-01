@@ -2,7 +2,6 @@
 # Script to build image for qemu.
 # Author: Siddhant Jajoo.
 
-set -e
 git submodule init
 git submodule sync
 git submodule update
@@ -34,5 +33,5 @@ else
 	echo "meta-aesd layer already exists"
 fi
 
-
+set -e
 bitbake core-image-aesd
