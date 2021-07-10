@@ -4,7 +4,7 @@ jobs:
     full-test:
         container:
           image: cuaesd/aesd-autotest:assignment6-yocto
-          options: --user 1001
+          options: --user 3000
         runs-on: self-hosted
         timeout-minutes: 120
         steps:
