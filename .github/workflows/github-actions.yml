@@ -1,0 +1,16 @@
+name: assignment-test
+on: [push]
+jobs:
+    full-test:
+        container: cuaesd/aesd-autotest:assignment6-yocto
+        runs-on: self-hosted
+        timeout-minutes: 120
+        steps:
+          - uses: actions/checkout@v2
+            name: Checkout submodules
+          - uses: textbook/git-checkout-submodule-action@2.1.1
+          - name: Run full test
+            env:
+              SSH_PRIVATE_KEY_BASE64: ${{ secrets.SSH_PRIVATE_KEY_BASE64 }}
+            run: ./full-test.sh
+
