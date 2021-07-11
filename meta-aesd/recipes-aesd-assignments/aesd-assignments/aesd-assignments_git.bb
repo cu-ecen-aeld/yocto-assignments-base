@@ -12,7 +12,9 @@ PV = "1.0+git${SRCPV}"
 
 # This sets your staging directory based on WORKDIR, where WORKDIR is defined at 
 # https://www.yoctoproject.org/docs/latest/ref-manual/ref-manual.html#var-WORKDIR
-S = "${WORKDIR}/git"
+# We reference the "server" directory here to build from the "server" directory
+# in your assignments repo
+S = "${WORKDIR}/git/server"
 
 # TODO: Add the aesdsocket application and any other files you need to install
 # See http://git.yoctoproject.org/cgit.cgi/poky/plain/meta/conf/bitbake.conf?h=warrior for yocto path prefixes
