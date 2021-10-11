@@ -6,6 +6,8 @@ jobs:
         timeout-minutes: 600
         steps:
           - uses: actions/checkout@v2
+            with:
+              clean: false
           - name: Checkout submodules
             run: git submodule update --init --recursive
           - uses: webfactory/ssh-agent@v0.5.3
