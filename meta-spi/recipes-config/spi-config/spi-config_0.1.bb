@@ -1,5 +1,5 @@
 # See http://git.yoctoproject.org/cgit.cgi/poky/tree/meta/files/common-licenses
-LICENSE = "MIT"
+LICENSE = "GPL Version 2"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 # TODO: Set this  with the path to your assignments rep.  Use ssh protocol and see lecture notes
