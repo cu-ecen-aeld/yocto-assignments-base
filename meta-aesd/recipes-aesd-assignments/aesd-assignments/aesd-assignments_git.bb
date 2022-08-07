@@ -1,4 +1,4 @@
-# See http://git.yoctoproject.org/cgit.cgi/poky/tree/meta/files/common-licenses
+# See https://git.yoctoproject.org/poky/tree/meta/files/common-licenses
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
@@ -11,15 +11,16 @@ PV = "1.0+git${SRCPV}"
 #SRCREV = "f99b82a5d4cb2a22810104f89d4126f52f4dfaba"
 
 # This sets your staging directory based on WORKDIR, where WORKDIR is defined at 
-# https://www.yoctoproject.org/docs/latest/ref-manual/ref-manual.html#var-WORKDIR
+# https://docs.yoctoproject.org/ref-manual/variables.html?highlight=workdir#term-WORKDIR
 # We reference the "server" directory here to build from the "server" directory
 # in your assignments repo
 S = "${WORKDIR}/git/server"
 
 # TODO: Add the aesdsocket application and any other files you need to install
-# See http://git.yoctoproject.org/cgit.cgi/poky/plain/meta/conf/bitbake.conf?h=warrior for yocto path prefixes
-#FILES_${PN} += "${bindir}/aesdsocket"
+# See https://git.yoctoproject.org/poky/plain/meta/conf/bitbake.conf?h=kirkstone
+#FILES:${PN} += "${bindir}/aesdsocket"
 # TODO: customize these as necessary for any libraries you need for your application
+# (and remove comment)
 #TARGET_LDFLAGS += "-pthread -lrt"
 
 do_configure () {
@@ -34,8 +35,8 @@ do_install () {
 	# TODO: Install your binaries/scripts here.
 	# Be sure to install the target directory with install -d first
 	# Yocto variables ${D} and ${S} are useful here, which you can read about at 
-	# https://www.yoctoproject.org/docs/latest/ref-manual/ref-manual.html#var-D
+	# https://docs.yoctoproject.org/ref-manual/variables.html?highlight=workdir#term-D
 	# and
-	# https://www.yoctoproject.org/docs/latest/ref-manual/ref-manual.html#var-S
+	# https://docs.yoctoproject.org/ref-manual/variables.html?highlight=workdir#term-S
 	# See example at https://github.com/cu-ecen-aeld/ecen5013-yocto/blob/ecen5013-hello-world/meta-ecen5013/recipes-ecen5013/ecen5013-hello-world/ecen5013-hello-world_git.bb
 }
