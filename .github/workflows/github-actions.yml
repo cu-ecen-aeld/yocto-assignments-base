@@ -3,21 +3,32 @@ on: [push]
 jobs:
       full-test:  
         runs-on: self-hosted
-        timeout-minutes: 600
         steps:
-          - uses: actions/checkout@v2
+          - uses: actions/checkout@v3
             with:
               clean: false
-          - name: Checkout submodules
-            run: git submodule update --init --recursive
-          - uses: webfactory/ssh-agent@v0.5.3
+              submodules: 'recursive'
+          - uses: webfactory/ssh-agent@v0.5.4
             with:
                  ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          - name: Run full test
-            env:
-              GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
-            run: ./full-test.sh
+          - name: Run build
+            timeout-minutes: 600
+            run: |
+               docker run --rm \
+                 -v $SSH_AUTH_SOCK:/ssh-agent -v ~/.ssh/known_hosts:/root/.ssh/known_hosts -e SSH_AUTH_SOCK=/ssh-agent \
+                 -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} \
+                 cuaesd/aesd-autotest:assignment6-yocto \
+                 --workdir=${GITHUB_WORKSPACE} \
+                 ./build.sh
           - name: Cleanup
             if: always()
             run: |
               ssh-add -D
+          - name: Run full test
+            timeout-minutes: 15
+            run: |
+               docker run --rm \
+                 -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} \
+                 cuaesd/aesd-autotest:assignment6-yocto \
+                 --workdir=${GITHUB_WORKSPACE} \
+                 ./full-test.sh
