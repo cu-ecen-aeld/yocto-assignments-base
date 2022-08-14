@@ -1,1 +1,1 @@
-assignment6-yocto
+assignment7-yocto
