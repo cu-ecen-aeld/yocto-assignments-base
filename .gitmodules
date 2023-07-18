@@ -1,3 +1,15 @@
 [submodule "assignment-autotest"]
 	path = assignment-autotest
 	url = https://github.com/cu-ecen-aeld/assignment-autotest.git
+[submodule "poky"]
+	path = poky
+	url = https://git.yoctoproject.org/cgit/cgit.cgi/poky/
+	branch = dunfell
+[submodule "meta-openembedded"]
+	path = meta-openembedded
+	url = git@github.com:openembedded/meta-openembedded.git
+	branch = dunfell
+[submodule "meta-raspberrypi"]
+	path = meta-raspberrypi
+	url = git@github.com:agherzan/meta-raspberrypi.git
+	branch = dunfell
