@@ -1,0 +1,54 @@
+{
+    "version": "1.0",
+    "description": "CU AESD and AELD Yocto Assignments",
+    "sources": {
+        "bitbake": {
+            "git-remote": {
+                "uri": "https://git.openembedded.org/bitbake",
+                "branch": "2.18",
+                "rev": "2.18"
+            }
+        },
+        "openembedded-core": {
+            "git-remote": {
+                "uri": "https://git.openembedded.org/openembedded-core",
+                "branch": "wrynose",
+                "rev": "wrynose"
+            }
+        },
+        "meta-yocto": {
+            "git-remote": {
+                "uri": "https://git.yoctoproject.org/meta-yocto",
+                "branch": "wrynose",
+                "rev": "wrynose"
+            }
+        }
+    },
+    "bitbake-setup": {
+        "configurations": [
+            {
+                "name": "yocto-assignments",
+                "description": "CU AESD and AELD Yocto Assignments",
+                "setup-dir-name": "yocto-assignments-wrynose",
+                "top-dir-name": "build",
+                "bb-layers": [
+                    "openembedded-core/meta",
+                    "meta-yocto/meta-poky",
+                    "meta-yocto/meta-yocto-bsp"
+                ],
+                "bb-layers-file-relative": [
+                    "../meta-aesd"
+                ],
+                "oe-fragments": [
+                    "machine/qemuarm64",
+                    "distro/poky",
+                    "meta-aesd/rm-work"
+                ],
+                "bb-env-passthrough-additions": [
+                    "SSTATE_DIR",
+                    "DL_DIR"
+                ]
+            }
+        ]
+    }
+}
