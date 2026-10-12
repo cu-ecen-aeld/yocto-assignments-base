@@ -1,4 +1,5 @@
-build
+bitbake-builds/
 .vscode
 valgrind-out.txt
 test.sh.log
+pyshtables.py

@@ -9,32 +9,62 @@ jobs:
       full-test:
         runs-on: self-hosted
         steps:
-          - uses: actions/checkout@v3
+          - uses: actions/checkout@v7
             with:
               clean: false
               submodules: 'recursive'
-          - uses: webfactory/ssh-agent@v0.5.4
+            env:
+            # This forces Git to accept the parent repository and all submodules as safe,
+            # overriding the temporary HOME sandbox behavior.
+              GIT_CONFIG_COUNT: 2
+              GIT_CONFIG_KEY_0: safe.directory
+              GIT_CONFIG_VALUE_0: '${{ github.workspace }}'
+              GIT_CONFIG_KEY_1: safe.directory
+              GIT_CONFIG_VALUE_1: '${{ github.workspace }}/*'
+          # Only needed for private repositories, remove this step and the cleanup
+          # step below when using https with public repositories
+          - uses: ./.github/actions/ssh-key
             with:
-                 ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+              ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           - name: Run build
             timeout-minutes: 600
             run: |
-               docker run --rm \
-                 -v $SSH_AUTH_SOCK:/ssh-agent -e SSH_AUTH_SOCK=/ssh-agent \
-                 -e GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" \
+              docker_args=()
+
+              if [[ -n "${DL_DIR:-}" ]]; then
+                echo "Using DL_DIR=${DL_DIR}"
+                docker_args+=(
+                  -e "DL_DIR=${DL_DIR}"
+                  -v "${DL_DIR}:${DL_DIR}"
+                )
+              fi
+
+              if [[ -n "${SSTATE_DIR:-}" ]]; then
+                echo "Using SSTATE_DIR=${SSTATE_DIR}"
+                docker_args+=(
+                  -e "SSTATE_DIR=${SSTATE_DIR}"
+                  -v "${SSTATE_DIR}:${SSTATE_DIR}"
+                )
+              fi
+
+              docker run --rm \
+                 "${docker_args[@]}" \
+                 ${SSH_DOCKER_ARGS:-} \
                  -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} \
-                 cuaesd/aesd-autotest:24-assignment6-yocto \
+                 cuaesd/aesd-autotest:26-assignment6-yocto \
                  --workdir=${GITHUB_WORKSPACE} \
                  ./build.sh
-          - name: Cleanup
+          - uses: ./.github/actions/ssh-key
             if: always()
-            run: |
-              ssh-add -D
+            with:
+              cleanup: 'true'
           - name: Run full test
             timeout-minutes: 15
             run: |
-               docker run --rm \
+              # The build already completed in the previous step, only validate here
+              docker run --rm \
+                 -e SKIP_BUILD=1 \
                  -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} \
-                 cuaesd/aesd-autotest:assignment6-yocto \
+                 cuaesd/aesd-autotest:26-assignment6-yocto \
                  --workdir=${GITHUB_WORKSPACE} \
                  ./full-test.sh
